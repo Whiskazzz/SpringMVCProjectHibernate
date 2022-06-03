@@ -1,12 +1,11 @@
 package web.dao;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import web.model.User;
-
 import java.util.List;
 
-public interface UserDao extends JpaRepository<User,Long> {
+
+public interface UserDao{
 
     void saveUser(String name, String lastName, String email);
 

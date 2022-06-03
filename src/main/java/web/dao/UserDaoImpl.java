@@ -1,51 +1,44 @@
 package web.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.PlatformTransactionManager;
-import web.config.HibernateConfig;
 import web.model.User;
-
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
+
+@Transactional
 @Repository
-public class UserDaoImpl{
+public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     public List<User> getAllUsers() {
-
-        if (entityManager != null) {
-            String jpql = "from User";
-            TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
-
-            return query.getResultList();
-        } else {
-            return null;
-        }
+        String jpql = "from User";
+        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
+        return query.getResultList();
     }
 
 
     public void saveUser(String name, String lastName, String email) {
-        entityManager.persist(new User(name,lastName,email));
+        entityManager.persist(new User(name, lastName, email));
 
     }
 
 
     public void removeUserById(long id) {
-
+        entityManager.remove(getUserById(id));
     }
 
-
     public User getUserById(long id) {
-        return null;
+        return entityManager.find(User.class, id);
     }
 
 
     public void changeUserById(long id, String name, String lastName, String email) {
+        User user = new User(id, name, lastName, email);
+        entityManager.merge(user);
 
     }
 
