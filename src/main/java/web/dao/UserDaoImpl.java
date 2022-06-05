@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 
-@Transactional
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
